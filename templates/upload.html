@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video - Driver Monitoring System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .upload-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background: #f8f9ff;
+            border-color: #764ba2;
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .file-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .btn-analyze {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .loader {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="upload-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <a href="/dashboard" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+                <h4><i class="fas fa-upload"></i> Upload Driving Video</h4>
+                <div style="width: 80px;"></div>
+            </div>
+            
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            
+            <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                <div class="upload-area" onclick="document.getElementById('videoFile').click()">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h5>Click to select video file</h5>
+                    <p class="text-muted">Supported formats: MP4, AVI, MOV, MKV (Max 500MB)</p>
+                    <input type="file" id="videoFile" name="video" accept="video/*" style="display: none;" required>
+                </div>
+                
+                <div id="fileInfo" class="file-info">
+                    <i class="fas fa-video"></i> <span id="fileName"></span><br>
+                    <small id="fileSize"></small>
+                </div>
+                
+                <button type="submit" class="btn btn-analyze" id="analyzeBtn" disabled>
+                    <i class="fas fa-microchip"></i> Analyze Video
+                </button>
+            </form>
+            
+            <div id="loader" class="loader">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Analyzing video... This may take a few minutes.</p>
+            </div>
+            
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-info-circle"></i> 
+                <strong>What happens next?</strong><br>
+                Our AI will analyze the driver's facial expressions, detect emotions, calculate concentration levels, and determine if the driver is fit for driving.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const fileInput = document.getElementById('videoFile');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const uploadForm = document.getElementById('uploadForm');
+        const loader = document.getElementById('loader');
+        
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileName.textContent = file.name;
+                fileSize.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+                fileInfo.style.display = 'block';
+                analyzeBtn.disabled = false;
+            }
+        });
+        
+        uploadForm.addEventListener('submit', function() {
+            analyzeBtn.disabled = true;
+            loader.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

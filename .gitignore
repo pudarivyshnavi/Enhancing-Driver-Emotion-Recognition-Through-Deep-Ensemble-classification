@@ -1,0 +1,204 @@
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+*.egg
+dist/
+build/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+.coverage.*
+.cover
+htmlcov/
+
+# ============================================
+# Virtual Environment
+# ============================================
+venv/
+env/
+.env/
+.venv/
+.virtualenv/
+virtualenv/
+
+# ============================================
+# IDE / Editor Files
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.suo
+*.user
+*.sln
+*.csproj
+.vs/
+.project
+.classpath
+.settings/
+*.code-workspace
+
+# ============================================
+# Jupyter Notebook
+# ============================================
+.ipynb_checkpoints/
+*.ipynb
+*.pynb
+
+# ============================================
+# Database Files
+# ============================================
+*.db
+*.sqlite
+*.sqlite3
+users.db
+instance/
+
+# ============================================
+# Model Files (Large files - use Git LFS or exclude)
+# ============================================
+*.h5
+*.hdf5
+*.ckpt
+*.pb
+*.pkl
+*.joblib
+models/*.h5
+models/*.hdf5
+*.onnx
+*.tflite
+
+# ============================================
+# Generated Results & Uploads
+# ============================================
+generated_results/*
+!generated_results/.gitkeep
+static/uploads/*
+!static/uploads/.gitkeep
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+driver_report.json
+
+# ============================================
+# Logs & Temporary Files
+# ============================================
+*.log
+*.tmp
+temp/
+tmp/
+logs/
+*.cache
+*.pid
+*.seed
+*.pid.lock
+
+# ============================================
+# Environment Variables
+# ============================================
+.env
+.env.local
+.env.*.local
+config.py
+secrets.py
+
+# ============================================
+# Flask Specific
+# ============================================
+instance/
+.webassets-cache
+.flaskenv
+flask_session/
+
+# ============================================
+# TensorFlow / Keras
+# ============================================
+*.tflite
+*.tflite.txt
+*.tflite.bin
+*.tflite.meta
+*.tflite.index
+
+# ============================================
+# OS Specific
+# ============================================
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+
+# ============================================
+# Backup Files
+# ============================================
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+
+# ============================================
+# Docker
+# ============================================
+docker-compose.override.yml
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# ============================================
+# Testing
+# ============================================
+.pytest_cache/
+.tox/
+*.cover
+*.coverage
+htmlcov/
+.coverage.*
+coverage.xml
+*.pytest_cache/
+test_results/
+
+# ============================================
+# Miscellaneous
+# ============================================
+*.swp
+*.swo
+*~
+*.tmp
+*.temp
+*.cache
+*.lck
+*.lock

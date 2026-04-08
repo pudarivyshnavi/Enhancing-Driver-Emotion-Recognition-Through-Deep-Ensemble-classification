@@ -1,0 +1,17 @@
+{
+  "video_file": "driver-action-recognition.mp4",
+  "video_duration_seconds": 418.4,
+  "frames_analyzed": 150,
+  "face_detection_rate_percent": 11.4,
+  "concentration_level_percent": 76.8,
+  "driving_accuracy_percent": 75.2,
+  "fit_for_driving": "Yes",
+  "reason": "Driver appears attentive and emotionally stable.",
+  "emotion_distribution": {
+    "happy": 142,
+    "sad": 8
+  },
+  "primary_emotion": "happy",
+  "safety_score": 65.56,
+  "analysis_timestamp": "0:00:00"
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Driver Monitoring System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .sidebar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+        
+        .sidebar .nav-link {
+            color: white;
+            margin: 10px 0;
+            padding: 12px 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .analysis-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .analysis-card:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .badge-fit {
+            background: #28a745;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .badge-notfit {
+            background: #dc3545;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .badge-borderline {
+            background: #ffc107;
+            color: #333;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            border: none;
+            transition: transform 0.3s;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <h4 class="mb-4"><i class="fas fa-car-side"></i> DriveSafe AI</h4>
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="/dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a class="nav-link" href="/upload">
+                        <i class="fas fa-upload"></i> Upload Video
+                    </a>
+                    <a class="nav-link" href="/logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-tachometer-alt"></i> Welcome, {{ current_user.username }}!</h2>
+                    <a href="/upload" class="btn upload-btn">
+                        <i class="fas fa-plus"></i> New Analysis
+                    </a>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h6>Total Analyses</h6>
+                            <h3>{{ analyses|length }}</h3>
+                            <small class="text-muted">All time</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h6>Fit for Driving</h6>
+                            <h3>{{ analyses|selectattr('fit_for_driving', 'equalto', 'Yes')|list|length }}</h3>
+                            <small class="text-muted">Safe sessions</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h6>Average Concentration</h6>
+                            <h3>{% if analyses %}{{ (analyses|sum(attribute='concentration') / analyses|length)|round(1) }}{% else %}0{% endif %}%</h3>
+                            <small class="text-muted">Overall score</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h6>Primary Emotion</h6>
+                            <h3>Happy 😊</h3>
+                            <small class="text-muted">Most common</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Analyses -->
+                <h4 class="mt-4 mb-3"><i class="fas fa-history"></i> Recent Analyses</h4>
+                
+                {% if analyses %}
+                    {% for analysis in analyses %}
+                    <div class="analysis-card">
+                        <div class="row align-items-center">
+                            <div class="col-md-3">
+                                <strong><i class="fas fa-video"></i> {{ analysis.original_video }}</strong><br>
+                                <small class="text-muted">{{ analysis.analyzed_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="badge {% if analysis.fit_for_driving == 'Yes' %}badge-fit{% elif analysis.fit_for_driving == 'No' %}badge-notfit{% else %}badge-borderline{% endif %}">
+                                    {{ analysis.fit_for_driving }}
+                                </span>
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fas fa-chart-line"></i> Concentration: {{ analysis.concentration|round(1) }}%
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fas fa-bullseye"></i> Accuracy: {{ analysis.driving_accuracy|round(1) }}%
+                            </div>
+                            <div class="col-md-2">
+                                <i class="fas fa-smile"></i> Emotion: {{ analysis.primary_emotion }}
+                            </div>
+                            <div class="col-md-1">
+                                <a href="/results/{{ analysis.id }}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> No analyses yet. Click "New Analysis" to upload your first video.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
